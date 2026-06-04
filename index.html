@@ -818,7 +818,7 @@ let cur = 0;
 const TOTAL = 12;
 
 // ── WEBHOOK — set this once the Make.com scenario is created ──────
-const WEBHOOK_URL = '';
+const WEBHOOK_URL = 'https://hook.eu1.make.com/8huweyfpy0i9jmkakll2d39nqibed5kr';
 
 const LABELS = [
   '', 'חלק א — רקע', 'חלק ב — תמונת מצב כללית', 'חלק ג — גיל הרך',
@@ -856,39 +856,21 @@ function updateProg() {
 }
 
 // ── SUBMIT ───────────────────────────────────────────────────────
-async function submitSurvey() {
+function submitSurvey() {
   const btn = document.getElementById('submit-btn');
-  const errBanner = document.getElementById('submit-error');
+  const backBtn = btn.closest('.nav-row').querySelector('.btn-ghost');
 
-  errBanner.classList.remove('visible');
-  btn.classList.add('btn-submitting');
   btn.disabled = true;
-  btn.textContent = 'שולח...';
+  if (backBtn) backBtn.disabled = true;
 
-  const payload = {
-    submitted_at: new Date().toISOString(),
-    answers: A
-  };
+  goTo(13);
 
-  // If no webhook configured yet, go straight to thank-you
-  if (!WEBHOOK_URL) {
-    goTo(13);
-    return;
-  }
-
-  try {
-    const res = await fetch(WEBHOOK_URL, {
+  if (WEBHOOK_URL) {
+    fetch(WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    goTo(13);
-  } catch (e) {
-    errBanner.classList.add('visible');
-    btn.classList.remove('btn-submitting');
-    btn.disabled = false;
-    btn.textContent = 'שלחו את הסקר';
+      body: JSON.stringify({ submitted_at: new Date().toISOString(), answers: A })
+    }).catch(() => {});
   }
 }
 
