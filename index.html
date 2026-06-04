@@ -530,7 +530,7 @@
 
     <div class="nav-row">
       <button class="btn btn-ghost" onclick="goTo(1)">חזרה</button>
-      <button class="btn btn-primary" onclick="goTo(3)">הבא</button>
+      <button class="btn btn-primary" onclick="goSkipEarly(true)">הבא</button>
     </div>
   </div>
 
@@ -577,7 +577,7 @@
       <div class="yn" id="q11"></div>
     </div>
     <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goTo(3)">חזרה</button>
+      <button class="btn btn-ghost" onclick="goSkipEarly(false)">חזרה</button>
       <button class="btn btn-primary" onclick="goTo(5)">הבא</button>
     </div>
   </div>
@@ -829,6 +829,14 @@ const LABELS = [
 ];
 
 // ── NAVIGATION ──────────────────────────────────────────────────
+function hasEarlyChildhood() {
+  const q1 = A.q1 || [];
+  return q1.some(v => v.startsWith('מעון') || v.startsWith('גן ילדים'));
+}
+function goSkipEarly(forward) {
+  goTo(forward ? (hasEarlyChildhood() ? 3 : 4) : (hasEarlyChildhood() ? 3 : 2));
+}
+
 function goTo(n) {
   document.getElementById('step-' + cur).classList.remove('active');
   cur = n;
