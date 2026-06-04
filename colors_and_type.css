@@ -1,0 +1,128 @@
+/* ============================================================
+   מובילי חינוך · Movili Hinuch — Design Foundations
+   Colors + Typography tokens (base + semantic), RTL-first.
+   Brand colors sampled directly from the official logo.
+   ============================================================ */
+
+/* Heebo is the workhorse Hebrew sans. The brand WORDMARK itself is
+   custom hand-painted lettering and is NOT reproducible with a webfont —
+   always use the logo asset for the brand name. Heebo (heavy weights)
+   echoes the wordmark's confident, blocky weight for headlines.
+   NOTE: loaded from Google Fonts CDN (substitution flagged to client). */
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* ---------- BRAND CORE (confirmed by client) ---------- */
+  --brand-blue:        #377ED8;   /* primary — brand blue */
+  --brand-navy:        #102F75;   /* secondary — deep navy */
+  --brand-ink:         #111111;   /* wordmark black / primary text */
+  --brand-bg:          #f3f3f3;   /* official light background / panel gray */
+
+  /* ---------- BLUE SCALE (primary) ---------- */
+  --blue-50:   #EBF3FB;
+  --blue-100:  #D4E6F7;
+  --blue-200:  #A9CDF0;
+  --blue-300:  #7DB5E8;
+  --blue-400:  #589CDE;
+  --blue-500:  #377ED8;   /* = brand-blue */
+  --blue-600:  #2D6BBF;
+  --blue-700:  #2358A6;
+  --blue-800:  #19458D;
+  --blue-900:  #102F75;   /* = brand-navy (deep anchor) */
+  --blue-950:  #0A1F55;
+
+  /* ---------- NEUTRALS (cool-leaning grays) ---------- */
+  --white:     #FFFFFF;
+  --gray-50:   #f3f3f3;   /* = brand-bg */
+  --gray-100:  #EDF1F5;
+  --gray-200:  #DCE3EB;
+  --gray-300:  #C2CCD6;
+  --gray-400:  #94A1AE;
+  --gray-500:  #6B7884;
+  --gray-600:  #4D5963;
+  --gray-700:  #36404A;
+  --gray-800:  #222A31;
+  --gray-900:  #111111;   /* = brand-ink */
+
+  /* ---------- SEMANTIC (status) ---------- */
+  --success:   #2E9E5B;
+  --success-bg:#E7F5EC;
+  --warning:   #E0A000;
+  --warning-bg:#FBF2D9;
+  --danger:    #D43A2F;
+  --danger-bg: #FBE8E6;
+  --info:      var(--blue-500);
+  --info-bg:   var(--blue-50);
+
+  /* ---------- SEMANTIC ROLES ---------- */
+  --fg-1:      var(--gray-900);   /* primary text */
+  --fg-2:      var(--gray-600);   /* secondary text */
+  --fg-3:      var(--gray-500);   /* muted / captions */
+  --fg-invert: var(--white);      /* text on blue/navy */
+  --bg-1:      var(--white);      /* page */
+  --bg-2:      var(--brand-bg);   /* subtle panel — official #f3f3f3 */
+  --bg-3:      var(--gray-100);   /* deeper panel */
+  --bg-brand:  var(--brand-blue);
+  --bg-brand-deep: var(--brand-navy);
+  --border-1:  var(--gray-200);   /* hairlines / card borders */
+  --border-2:  var(--gray-300);   /* stronger dividers */
+  --accent:    var(--brand-blue);
+  --link:      var(--blue-600);
+
+  /* ---------- TYPE FAMILIES ---------- */
+  --font-sans: 'Heebo', 'Assistant', 'Arial Hebrew', system-ui, sans-serif;
+  --font-display: 'Heebo', 'Assistant', system-ui, sans-serif;
+
+  /* ---------- TYPE SCALE (px @ desktop) ---------- */
+  --fs-display: 76px;   --lh-display: 0.98; --fw-display: 900;
+  --fs-h1: 52px;        --lh-h1: 1.05;     --fw-h1: 900;
+  --fs-h2: 38px;        --lh-h2: 1.1;      --fw-h2: 800;
+  --fs-h3: 28px;        --lh-h3: 1.18;     --fw-h3: 800;
+  --fs-h4: 22px;        --lh-h4: 1.25;     --fw-h4: 700;
+  --fs-lead: 21px;      --lh-lead: 1.6;    --fw-lead: 500;
+  --fs-body: 18px;      --lh-body: 1.65;   --fw-body: 400;
+  --fs-sm: 15px;        --lh-sm: 1.55;     --fw-sm: 400;
+  --fs-xs: 13px;        --lh-xs: 1.4;      --fw-xs: 500;
+  --fs-eyebrow: 14px;   --ls-eyebrow: 0.12em; --fw-eyebrow: 700;
+
+  /* ---------- SPACING (4px base) ---------- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+  --sp-9: 96px; --sp-10: 128px;
+
+  /* ---------- RADII ---------- */
+  --r-sm: 6px;  --r-md: 10px; --r-lg: 16px; --r-xl: 24px; --r-pill: 999px;
+
+  /* ---------- SHADOWS (soft, cool-tinted) ---------- */
+  --shadow-sm: 0 1px 2px rgba(0,48,122,.06), 0 1px 3px rgba(0,48,122,.08);
+  --shadow-md: 0 4px 10px rgba(0,48,122,.08), 0 2px 4px rgba(0,48,122,.06);
+  --shadow-lg: 0 14px 34px rgba(0,48,122,.12), 0 4px 10px rgba(0,48,122,.07);
+  --shadow-brand: 0 12px 28px rgba(0,129,223,.30);
+
+  /* ---------- MOTION ---------- */
+  --ease: cubic-bezier(.2,.7,.2,1);
+  --dur: 180ms;
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES (opt-in via .ds-prose or utility classes)
+   ============================================================ */
+.ds-display {
+  font-family: var(--font-display);
+  font-size: var(--fs-display); line-height: var(--lh-display);
+  font-weight: var(--fw-display); color: var(--fg-1);
+  letter-spacing: -0.01em; text-wrap: balance;
+}
+h1, .ds-h1 { font-family: var(--font-display); font-size: var(--fs-h1); line-height: var(--lh-h1); font-weight: var(--fw-h1); color: var(--fg-1); letter-spacing: -0.01em; text-wrap: balance; }
+h2, .ds-h2 { font-family: var(--font-sans); font-size: var(--fs-h2); line-height: var(--lh-h2); font-weight: var(--fw-h2); color: var(--fg-1); text-wrap: balance; }
+h3, .ds-h3 { font-family: var(--font-sans); font-size: var(--fs-h3); line-height: var(--lh-h3); font-weight: var(--fw-h3); color: var(--fg-1); }
+h4, .ds-h4 { font-family: var(--font-sans); font-size: var(--fs-h4); line-height: var(--lh-h4); font-weight: var(--fw-h4); color: var(--fg-1); }
+.ds-lead   { font-size: var(--fs-lead); line-height: var(--lh-lead); font-weight: var(--fw-lead); color: var(--fg-2); }
+p, .ds-body { font-family: var(--font-sans); font-size: var(--fs-body); line-height: var(--lh-body); font-weight: var(--fw-body); color: var(--fg-1); }
+.ds-sm     { font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--fg-2); }
+.ds-xs     { font-size: var(--fs-xs); line-height: var(--lh-xs); color: var(--fg-3); }
+.ds-eyebrow {
+  font-size: var(--fs-eyebrow); font-weight: var(--fw-eyebrow);
+  letter-spacing: var(--ls-eyebrow); text-transform: none;
+  color: var(--brand-blue);
+}
