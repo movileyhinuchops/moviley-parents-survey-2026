@@ -444,36 +444,41 @@
     .site-footer {
       border-top: 1px solid var(--border-1);
       background: var(--white);
-      padding: 10px 24px;
+      padding: 0 24px;
+      height: 64px;
+      display: flex; align-items: center;
     }
     .footer-inner {
+      width: 100%; max-width: 1100px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
       gap: 12px;
     }
-    .footer-logo { height: 36px; }
+    .footer-logo { height: 36px; display: block; }
     .footer-copy {
       font-size: 13px; color: var(--fg-3);
       text-align: center; flex: 1;
+      line-height: 1;
     }
-    .footer-start { display: flex; align-items: center; gap: 12px; }
-    .footer-social { display: flex; gap: 6px; }
+    .footer-start { display: flex; align-items: center; gap: 10px; }
+    .footer-social { display: flex; gap: 6px; align-items: center; }
     .footer-social a {
       width: 34px; height: 34px; border-radius: 50%;
       background: var(--gray-100);
       display: inline-flex; align-items: center; justify-content: center;
       color: var(--fg-2); transition: background .15s;
-      text-decoration: none;
+      text-decoration: none; flex-shrink: 0;
     }
     .footer-social a:hover { background: var(--gray-200); }
     .footer-social svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
     .footer-a11y {
       font-size: 13px; color: var(--fg-3);
       text-decoration: underline; white-space: nowrap;
+      line-height: 1; display: block;
     }
     .footer-a11y:hover { color: var(--fg-2); }
     @media (max-width: 560px) {
-      .site-footer { padding: 16px; }
-      .footer-inner { flex-wrap: wrap; justify-content: center; text-align: center; row-gap: 12px; }
+      .site-footer { height: auto; padding: 14px 16px; }
+      .footer-inner { flex-wrap: wrap; justify-content: center; text-align: center; row-gap: 10px; }
       .footer-copy { width: 100%; order: 3; }
       .footer-start { order: 1; }
       .footer-a11y { order: 2; }
