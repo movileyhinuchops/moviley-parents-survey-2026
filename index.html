@@ -409,13 +409,6 @@
       border-color: var(--danger);
       box-shadow: 0 0 0 3px var(--danger-bg);
     }
-    .validation-msg {
-      background: var(--danger-bg); border: 1px solid var(--danger);
-      color: var(--danger); border-radius: var(--r-md);
-      padding: 12px 16px; font-size: 0.875rem; font-weight: 600;
-      margin-bottom: 4px; display: none;
-    }
-    .validation-msg.visible { display: block; }
 
     /* Skip link — visible on focus only */
     .skip-link {
@@ -929,28 +922,16 @@ function isAnswered(qid) {
 
 function clearErrors() {
   document.querySelectorAll('.q.q-error').forEach(el => el.classList.remove('q-error'));
-  document.querySelectorAll('.validation-msg.visible').forEach(el => el.classList.remove('visible'));
 }
 
 function showErrors(unanswered) {
-  const step = document.getElementById('step-' + cur);
-  let msg = step.querySelector('.validation-msg');
-  if (!msg) {
-    msg = document.createElement('div');
-    msg.className = 'validation-msg';
-    msg.setAttribute('role', 'alert');
-    msg.textContent = 'יש לענות על כל השאלות לפני המשך.';
-    const navRow = step.querySelector('.nav-row');
-    if (navRow) navRow.parentNode.insertBefore(msg, navRow);
-  }
-  msg.classList.add('visible');
-  let firstCard = null;
+  window._valFirstCard = null;
   unanswered.forEach(qid => {
     const el = document.getElementById(qid);
     const card = el && el.closest('.q');
-    if (card) { card.classList.add('q-error'); if (!firstCard) firstCard = card; }
+    if (card) { card.classList.add('q-error'); if (!window._valFirstCard) window._valFirstCard = card; }
   });
-  if (firstCard) firstCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  openValModal();
 }
 
 function goNext(target) {
@@ -1255,6 +1236,31 @@ mkRadio('q36', ['כן, אשמח להצטרף', 'לא'], 'q36');
     <a href="#" class="footer-a11y" id="a11y-btn" aria-haspopup="dialog">הצהרת נגישות</a>
   </div>
 </footer>
+
+<!-- VALIDATION MODAL -->
+<div id="val-modal" role="dialog" aria-modal="true" aria-labelledby="val-title" style="display:none; position:fixed; inset:0; z-index:1001; background:rgba(0,0,0,.45); align-items:center; justify-content:center; padding:24px;">
+  <div style="background:#fff; border-radius:16px; max-width:360px; width:100%; padding:32px 28px; position:relative; direction:rtl; font-family:var(--font-sans); text-align:center; box-shadow:0 8px 32px rgba(0,0,0,.18);">
+    <p style="font-size:2.25rem; margin:0 0 8px; line-height:1;">🙏</p>
+    <h2 id="val-title" style="font-size:1.125rem; font-weight:700; color:var(--fg-1); margin:0 0 12px;">כמעט! עוד כמה תשובות</h2>
+    <p style="font-size:0.9375rem; color:var(--fg-2); line-height:1.65; margin:0 0 24px;">יש לענות על כל השאלות בעמוד כדי לעבור לעמוד הבא.<br>השאלות החסרות מסומנות באדום.</p>
+    <button id="val-ok" style="background:var(--brand-blue); color:#fff; border:none; border-radius:var(--r-md); padding:12px 32px; font-size:1rem; font-weight:600; cursor:pointer; font-family:var(--font-sans); width:100%;">הבנתי, אחזור למלא</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var vm = document.getElementById('val-modal');
+  var vok = document.getElementById('val-ok');
+  function shut(){
+    vm.style.display = 'none';
+    if (window._valFirstCard) { window._valFirstCard.scrollIntoView({ behavior:'smooth', block:'center' }); window._valFirstCard = null; }
+  }
+  vok.addEventListener('click', shut);
+  vm.addEventListener('click', function(e){ if (e.target === vm) shut(); });
+  document.addEventListener('keydown', function(e){ if (e.key==='Escape' && vm.style.display==='flex') shut(); });
+  window.openValModal = function(){ vm.style.display='flex'; vok.focus(); };
+})();
+</script>
 
 <!-- ACCESSIBILITY DECLARATION MODAL -->
 <div id="a11y-modal" role="dialog" aria-modal="true" aria-labelledby="a11y-title" style="display:none; position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.45); align-items:center; justify-content:center; padding:24px;">
