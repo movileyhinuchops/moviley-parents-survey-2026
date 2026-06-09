@@ -433,6 +433,18 @@
       .cover-title { font-size: 1.75rem; }   /* 35px */
       .sec-title   { font-size: 1.25rem; }   /* 25px */
       .ty-title    { font-size: 1.375rem; }  /* 27.5px */
+
+      /* scale alignment fix:
+         display:contents on scale-col puts all labels in row 1 and all buttons
+         in row 2 inside a shared CSS Grid — Grid equalizes row heights so
+         columns 1&5 (with text labels) align with empty columns 2-4 */
+      .scale-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        column-gap: 6px;
+        row-gap: 4px;
+      }
+      .scale-col { display: contents; }
     }
 
     /* ── FOOTER ────────────────────────────────── */
