@@ -9,7 +9,6 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     img { display: block; max-width: 100%; }
-    button { font-family: var(--font-sans); cursor: pointer; }
 
     body {
       font-family: var(--font-sans);
@@ -25,436 +24,92 @@
       background: rgba(255,255,255,.96);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border-1);
-      position: sticky; top: 0; z-index: 100;
     }
     .hdr-inner {
       max-width: 820px; margin: 0 auto; padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex; align-items: center; justify-content: center;
       height: 66px;
     }
     .hdr-logo { height: 38px; }
-    .hdr-counter { font-size: 0.875rem; font-weight: 600; color: var(--fg-3); }
-
-    /* ── PROGRESS ──────────────────────────────── */
-    .prog-bar-wrap {
-      background: white; border-bottom: 1px solid var(--border-1);
-      padding: 10px 24px; position: sticky; top: 66px; z-index: 90;
-    }
-    .prog-inner { max-width: 820px; margin: 0 auto; }
-    .prog-meta {
-      display: flex; justify-content: space-between;
-      font-size: 0.75rem; font-weight: 600; color: var(--fg-3);
-      margin-bottom: 6px;
-    }
-    .prog-track {
-      height: 4px; background: var(--gray-100);
-      border-radius: 4px; overflow: hidden;
-    }
-    .prog-fill {
-      height: 100%; background: var(--brand-blue);
-      border-radius: 4px; transition: width .45s var(--ease);
-    }
 
     /* ── MAIN ──────────────────────────────────── */
-    .main { max-width: 820px; margin: 0 auto; padding: 32px 24px 100px; flex: 1; }
-
-    /* ── STEPS ─────────────────────────────────── */
-    .step { display: none; }
-    .step.active {
-      display: block;
-      animation: fadeUp .22s var(--ease);
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .main {
+      max-width: 820px; margin: 0 auto; padding: 48px 24px 100px;
+      flex: 1;
+      display: flex; align-items: center; justify-content: center;
     }
 
-    /* ── COVER ─────────────────────────────────── */
-    .cover {
+    /* ── CARD ──────────────────────────────────── */
+    .card {
       background: white; border-radius: var(--r-xl);
       padding: 64px 56px; text-align: center;
       box-shadow: var(--shadow-md);
+      max-width: 600px; width: 100%;
     }
-    .cover-logo { height: 82px; margin: 0 auto 34px; }
-    .cover-eyebrow {
-      font-size: 0.8125rem; font-weight: 700; letter-spacing: .1em;
-      color: var(--brand-blue); margin-bottom: 10px;
-      text-transform: none;
-    }
-    .cover-title {
-      font-size: 2.875rem; font-weight: 900; line-height: 1.06;
-      letter-spacing: -.01em; margin-bottom: 5px;
-    }
-    .cover-divider {
-      width: 52px; height: 3px; background: var(--brand-blue);
-      border-radius: 3px; margin: 22px auto 26px;
-    }
-    .cover-body {
-      font-size: 1rem; line-height: 1.8; color: var(--fg-2);
-      max-width: 520px; margin: 0 auto 40px; text-align: right;
-    }
-
-    /* ── SECTION HEADER ────────────────────────── */
-    .sec-tag {
-      display: inline-flex; align-items: center;
-      background: var(--blue-50); color: var(--brand-blue);
-      font-size: 0.75rem; font-weight: 700; letter-spacing: .06em;
-      padding: 4px 13px; border-radius: var(--r-pill); margin-bottom: 10px;
-    }
-    .sec-title {
-      font-size: 1.625rem; font-weight: 900; margin-bottom: 5px; line-height: 1.2;
-    }
-    .sec-desc {
-      font-size: 0.875rem; color: var(--fg-2); margin-bottom: 26px; line-height: 1.55;
-    }
-
-    /* ── QUESTION CARD ─────────────────────────── */
-    .q {
-      background: white; border: 1px solid var(--border-1);
-      border-radius: var(--r-lg); padding: 22px 24px; margin-bottom: 14px;
-    }
-    .q-label {
-      font-size: 0.9375rem; font-weight: 700; color: var(--fg-1);
-      line-height: 1.55; margin-bottom: 3px;
-    }
-    .q-num { color: var(--brand-blue); }
-    .q-note { font-size: 0.8125rem; color: var(--fg-3); margin-top: 2px; margin-bottom: 12px; }
-
-    /* ── CHECKBOX / RADIO ──────────────────────── */
-    .opts { display: flex; flex-direction: column; gap: 7px; margin-top: 13px; }
-    .opt {
-      display: flex; align-items: center; gap: 11px;
-      padding: 10px 13px; border: 1.5px solid var(--border-1);
-      border-radius: var(--r-md); cursor: pointer;
-      transition: border-color var(--dur) var(--ease),
-                  background var(--dur) var(--ease);
-      user-select: none;
-    }
-    .opt:hover { border-color: var(--blue-200); background: var(--blue-50); }
-    .opt.sel   { border-color: var(--brand-blue); background: var(--blue-50); }
-    .opt input { display: none; }
-    .opt-text  { font-size: 0.875rem; font-weight: 500; line-height: 1.4; }
-
-    /* checkbox indicator */
-    .opt-box {
-      width: 19px; height: 19px; border: 2px solid var(--border-2);
-      border-radius: 4px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      transition: all var(--dur);
-    }
-    .opt.sel .opt-box { background: var(--brand-blue); border-color: var(--brand-blue); }
-    .opt-box-dot {
-      width: 8px; height: 8px; background: white; border-radius: 2px;
-      opacity: 0; transition: opacity var(--dur);
-    }
-    .opt.sel .opt-box-dot { opacity: 1; }
-
-    /* radio indicator */
-    .opt-circle {
-      width: 19px; height: 19px; border: 2px solid var(--border-2);
-      border-radius: 50%; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color var(--dur);
-    }
-    .opt.sel .opt-circle { border-color: var(--brand-blue); }
-    .opt-circle-dot {
-      width: 9px; height: 9px; background: var(--brand-blue);
-      border-radius: 50%; opacity: 0; transition: opacity var(--dur);
-    }
-    .opt.sel .opt-circle-dot { opacity: 1; }
-
-    /* ── SCALE (single row, 1–5) ───────────────── */
-    .scale-wrap { margin-top: 16px; }
-    .scale-grid { display: flex; gap: 8px; }
-    .scale-col {
-      flex: 1; max-width: 70px;
-      display: flex; flex-direction: column; align-items: center;
-    }
-    .scale-col-label {
-      font-size: 0.75rem; font-weight: 600; color: var(--fg-3);
-      text-align: center; line-height: 1.3;
-      min-height: 32px;
-      display: flex; align-items: flex-end; justify-content: center;
-      padding-bottom: 6px;
-    }
-    .scale-btn {
-      width: 100%; aspect-ratio: 1;
-      border: 2px solid var(--border-2); border-radius: var(--r-md);
-      background: white; font-size: 1.0625rem; font-weight: 700; color: var(--fg-2);
-      display: flex; align-items: center; justify-content: center;
-      transition: all var(--dur) var(--ease);
-    }
-    .scale-btn:hover { border-color: var(--blue-300); background: var(--blue-50); color: var(--brand-blue); }
-    .scale-btn.sel   { background: var(--brand-blue); border-color: var(--brand-blue); color: white; }
-
-    /* ── SCALE TABLE ───────────────────────────── */
-    .tbl { margin-top: 12px; }
-    .tbl-hdr {
-      display: grid; grid-template-columns: 1fr 220px;
-      padding: 5px 0 8px; border-bottom: 2px solid var(--border-1);
-    }
-    .tbl-hdr-label { font-size: 0.75rem; font-weight: 700; color: var(--fg-3); }
-    .tbl-hdr-nums {
-      display: grid; grid-template-columns: repeat(5, 1fr);
-      font-size: 0.75rem; font-weight: 700; color: var(--fg-3);
-    }
-    .tbl-hdr-nums span { text-align: center; }
-
-    .tbl-row {
-      display: grid; grid-template-columns: 1fr 220px;
-      padding: 11px 0; border-bottom: 1px solid var(--border-1); align-items: center;
-    }
-    .tbl-row:last-child { border-bottom: none; }
-    .tbl-row:hover { background: var(--gray-50); border-radius: 6px; }
-    .tbl-label { font-size: 0.875rem; font-weight: 500; line-height: 1.5; padding-left: 8px; }
-    .tbl-btns { display: grid; grid-template-columns: repeat(5, 1fr); }
-    .tbl-btn {
-      width: 34px; height: 34px; margin: 0 auto;
-      border: 2px solid var(--border-2); border-radius: 50%;
-      background: white; font-size: 0.8125rem; font-weight: 700; color: var(--fg-2);
-      display: flex; align-items: center; justify-content: center;
-      transition: all var(--dur) var(--ease);
-    }
-    .tbl-btn:hover { border-color: var(--blue-300); background: var(--blue-50); color: var(--brand-blue); }
-    .tbl-btn.sel   { background: var(--brand-blue); border-color: var(--brand-blue); color: white; }
-
-    /* ── YES / NO TABLE ────────────────────────── */
-    .yn { margin-top: 12px; }
-    .yn-hdr {
-      display: grid; grid-template-columns: 1fr 72px 72px 96px;
-      padding: 5px 0 8px; border-bottom: 2px solid var(--border-1);
-      font-size: 0.75rem; font-weight: 700; color: var(--fg-3); text-align: center;
-    }
-    .yn-hdr > :first-child { text-align: right; }
-    .yn-row {
-      display: grid; grid-template-columns: 1fr 72px 72px 96px;
-      padding: 11px 0; border-bottom: 1px solid var(--border-1); align-items: center;
-    }
-    .yn-row:last-child { border-bottom: none; }
-    .yn-row-label { font-size: 0.875rem; font-weight: 500; line-height: 1.4; }
-    .yn-cell { display: flex; justify-content: center; }
-    .yn-btn {
-      width: 28px; height: 28px; border: 2px solid var(--border-2); border-radius: 50%;
-      background: white; transition: all var(--dur) var(--ease);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .yn-btn:hover { border-color: var(--blue-300); background: var(--blue-50); }
-    .yn-btn.sel   { background: var(--brand-blue); border-color: var(--brand-blue); }
-    .yn-btn.sel::after { content: ''; width: 9px; height: 9px; background: white; border-radius: 50%; display: block; }
-
-    /* ── GRADE 1–10 ────────────────────────────── */
-    .grades { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
-    .grade-btn {
-      width: 52px; height: 52px; border: 2px solid var(--border-2); border-radius: var(--r-md);
-      background: white; font-size: 1.0625rem; font-weight: 700; color: var(--fg-2);
-      display: flex; align-items: center; justify-content: center;
-      transition: all var(--dur) var(--ease);
-    }
-    .grade-btn:hover { border-color: var(--blue-300); background: var(--blue-50); color: var(--brand-blue); }
-    .grade-btn.sel   { background: var(--brand-blue); border-color: var(--brand-blue); color: white; }
-
-    /* ── SKIP NOTE ─────────────────────────────── */
-    .skip-note {
-      background: var(--info-bg); border: 1px solid var(--blue-200);
-      border-radius: var(--r-md); padding: 12px 16px;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      font-size: 0.875rem; color: var(--blue-700); margin-bottom: 18px;
-    }
-    .skip-btn {
-      background: none; border: none; color: var(--brand-blue);
-      font-size: 0.875rem; font-weight: 700; white-space: nowrap; text-decoration: underline;
-    }
-
-    /* ── NAVIGATION ────────────────────────────── */
-    .nav-row {
-      display: flex; justify-content: space-between; align-items: center;
-      gap: 14px; margin-top: 26px;
-    }
-    .btn {
-      display: inline-flex; align-items: center; gap: 7px;
-      font-size: 0.875rem; font-weight: 700; border: none;
-      padding: 11px 24px; border-radius: var(--r-md);
-      transition: all var(--dur) var(--ease);
-    }
-    .btn:active { transform: scale(.97); }
-    .btn-primary { background: var(--brand-blue); color: white; }
-    .btn-primary:hover { background: var(--blue-600); }
-    .btn-ghost {
-      background: transparent; color: var(--brand-blue);
-      box-shadow: inset 0 0 0 2px var(--brand-blue);
-    }
-    .btn-ghost:hover { background: var(--blue-50); }
-    .btn-lg { font-size: 1rem; padding: 13px 30px; }
-    .btn-start {
-      background: var(--brand-blue); color: white;
-      font-size: 1.0625rem; padding: 15px 40px;
-    }
-    .btn-start:hover { background: var(--blue-600); box-shadow: var(--shadow-brand); }
-    .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
-
-    /* ── SUBMIT LOADING STATE ──────────────────── */
-    .btn-submitting {
-      position: relative; pointer-events: none; opacity: .8;
-    }
-    .btn-submitting::after {
-      content: '';
-      width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,.4);
-      border-top-color: white;
+    .card-logo { height: 82px; margin: 0 auto 34px; }
+    .card-icon {
+      width: 70px; height: 70px;
+      background: var(--blue-50);
       border-radius: 50%;
-      animation: spin .6s linear infinite;
-      display: inline-block;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 28px;
+      font-size: 2rem;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .card-title {
+      font-size: 1.625rem; font-weight: 900; line-height: 1.25;
+      margin-bottom: 20px; color: var(--brand-navy);
+    }
+    .card-divider {
+      width: 52px; height: 3px; background: var(--brand-blue);
+      border-radius: 3px; margin: 0 auto 24px;
+    }
+    .card-body {
+      font-size: 1rem; line-height: 1.85; color: var(--fg-2);
+      margin-bottom: 12px; text-align: right;
+    }
+    .card-body:last-of-type { margin-bottom: 32px; }
 
-    /* ── ERROR BANNER ──────────────────────────── */
-    .submit-error {
-      background: var(--danger-bg); border: 1px solid var(--danger);
-      color: var(--danger); border-radius: var(--r-md);
-      padding: 12px 16px; font-size: 0.875rem; font-weight: 500;
-      margin-top: 14px; display: none;
-    }
-    .submit-error.visible { display: block; }
-
-    /* ── THANK YOU ─────────────────────────────── */
-    .ty-card {
-      background: white; border-radius: var(--r-xl);
-      padding: 64px 56px; text-align: center; box-shadow: var(--shadow-md);
-    }
-    .ty-icon {
-      width: 70px; height: 70px; background: var(--success-bg); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; margin: 0 auto 22px;
-    }
-    .ty-title { font-size: 1.875rem; font-weight: 900; margin-bottom: 12px; }
-    .ty-body {
-      font-size: 1rem; line-height: 1.75; color: var(--fg-2);
-      max-width: 460px; margin: 0 auto 28px;
-    }
-    .ty-join {
+    /* ── CTA ───────────────────────────────────── */
+    .cta-wrap {
       background: var(--blue-50); border: 1px solid var(--blue-200);
-      border-radius: var(--r-lg); padding: 24px 26px; text-align: right;
+      border-radius: var(--r-lg); padding: 24px 26px;
+      text-align: center;
     }
-    .ty-join h3 { font-size: 0.9375rem; font-weight: 800; color: var(--brand-navy); margin-bottom: 7px; }
-    .ty-join p  { font-size: 0.8125rem; color: var(--fg-2); line-height: 1.6; margin-bottom: 14px; }
+    .cta-label {
+      font-size: 0.9375rem; font-weight: 700; color: var(--brand-navy);
+      margin-bottom: 14px;
+    }
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #25D366; color: white;
+      font-family: var(--font-sans);
+      font-size: 1.0625rem; font-weight: 700;
+      border: none; border-radius: var(--r-md);
+      padding: 14px 36px; cursor: pointer;
+      text-decoration: none;
+      transition: background .15s ease, transform .1s ease;
+    }
+    .btn-wa:hover { background: #1ebe5a; }
+    .btn-wa:active { transform: scale(.97); }
+    .btn-wa svg { width: 22px; height: 22px; flex-shrink: 0; }
 
-    /* ── ACCESSIBILITY (WCAG 2.1 AA) ───────────── */
-
-    /* 1.4.3 Contrast: raise muted text gray-500 #6B7884 (4.1:1) → gray-600 #4D5963 (6.4:1) */
+    /* ── ACCESSIBILITY ─────────────────────────── */
     :root { --fg-3: #4D5963; }
-
-    /* 2.4.11 Focus Appearance: visible focus on all interactive elements */
     :focus-visible {
       outline: 3px solid var(--blue-700);
       outline-offset: 2px;
       border-radius: 4px;
       z-index: 2;
     }
-    .opt:focus-visible {
-      outline: 3px solid var(--blue-700);
-      outline-offset: 1px;
-    }
-    .scale-btn:focus-visible,
-    .tbl-btn:focus-visible,
-    .yn-btn:focus-visible,
-    .grade-btn:focus-visible {
-      outline: 3px solid var(--blue-700);
-      outline-offset: 2px;
-    }
-
-    /* 1.4.3 Contrast: white on brand-blue (#377ED8) = 3.8:1 FAILS.
-       Fix: white on blue-700 (#2358A6) = 6.4:1 ✓ */
-    .btn-primary         { background: var(--blue-700); }
-    .btn-primary:hover   { background: var(--blue-800); }
-    .btn-start           { background: var(--blue-700); }
-    .btn-start:hover     { background: var(--blue-800); box-shadow: none; }
-
-    /* 1.4.3 Contrast: sec-tag — brand-blue on blue-50 = 3.3:1 FAILS.
-       Fix: blue-800 on blue-100 ≈ 6.3:1 ✓ */
-    .sec-tag { background: var(--blue-100); color: var(--blue-800); }
-
-    /* 1.4.3 Contrast: q-num — brand-blue on white = 3.8:1 FAILS (15px bold = ~11pt).
-       Fix: blue-700 on white = 6.4:1 ✓ */
-    .q-num { color: var(--blue-700); }
-
-    /* 1.4.3 Contrast: cover eyebrow + links */
-    .cover-eyebrow { color: var(--blue-700); }
-    .skip-btn      { color: var(--blue-700); }
-
-    /* 1.4.11 Non-text contrast: UI component boundaries need 3:1 against background.
-       border-2 (#C2CCD6) = 1.6:1 FAILS. Fix: gray-500 (#6B7884) = 4.1:1 ✓ */
-    .opt-box, .opt-circle {
-      border-color: var(--gray-500);
-    }
-    .scale-btn:not(.sel),
-    .tbl-btn:not(.sel),
-    .yn-btn:not(.sel),
-    .grade-btn:not(.sel) {
-      border-color: var(--gray-500);
-    }
-
-    /* Raise accent states to blue-700 for consistency */
-    .opt.sel .opt-box   { background: var(--blue-700); border-color: var(--blue-700); }
-    .opt.sel .opt-circle { border-color: var(--blue-700); }
-    .opt-circle-dot     { background: var(--blue-700); }
-    .scale-btn.sel, .tbl-btn.sel { background: var(--blue-700); border-color: var(--blue-700); }
-    .yn-btn.sel  { background: var(--blue-700); border-color: var(--blue-700); }
-    .grade-btn.sel { background: var(--blue-700); border-color: var(--blue-700); }
-    .prog-fill   { background: var(--blue-700); }
-
-    /* 1.4.4 Resize Text: all font-sizes use rem — scales with user browser font preferences */
-    .scale-col-label { min-height: 36px; }
-
-    /* ── VALIDATION ───────────────────────────── */
-    .q.q-error {
-      border-color: var(--danger);
-      box-shadow: 0 0 0 3px var(--danger-bg);
-    }
-
-    /* Skip link — visible on focus only */
     .skip-link {
       position: absolute; top: -120px; right: 16px;
       background: var(--blue-700); color: var(--white);
       padding: 9px 18px; border-radius: var(--r-md);
       font-size: 0.875rem; font-weight: 700;
       text-decoration: none; z-index: 9999;
-      transition: top .12s var(--ease);
+      transition: top .12s ease;
     }
     .skip-link:focus { top: 8px; outline: 3px solid var(--blue-900); }
-
-    /* ── MOBILE ────────────────────────────────── */
-    @media (max-width: 768px) {
-      /* bump base font 16px → 18px: all rem values scale ×1.125 automatically */
-      html { font-size: 18px; }
-
-      /* layout */
-      .main { padding: 20px 14px 80px; }
-      .cover { padding: 38px 22px; }
-      .tbl-hdr, .tbl-row { grid-template-columns: 1fr 180px; }
-      .tbl-btn { width: 32px; height: 32px; }
-      .yn-hdr, .yn-row { grid-template-columns: 1fr 60px 60px 80px; }
-      .hdr-inner, .prog-bar-wrap { padding-inline: 16px; }
-      .opt { padding: 12px 14px; }
-
-      /* cap display text that becomes too large at 20px base */
-      .cover-title { font-size: 1.75rem; }   /* 35px */
-      .sec-title   { font-size: 1.25rem; }   /* 25px */
-      .ty-title    { font-size: 1.375rem; }  /* 27.5px */
-
-      /* scale alignment fix:
-         display:contents dissolves scale-col into the grid.
-         explicit grid-row forces all labels into row 1 and all buttons into
-         row 2 — Grid then equalizes row heights so columns with text labels
-         align with empty columns. */
-      .scale-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        column-gap: 6px;
-        row-gap: 4px;
-      }
-      .scale-col         { display: contents; }
-      .scale-col-label   { grid-row: 1; }
-      .scale-btn         { grid-row: 2; }
-    }
 
     /* ── FOOTER ────────────────────────────────── */
     .site-footer {
@@ -490,6 +145,16 @@
       text-decoration: underline; white-space: nowrap;
     }
     .footer-a11y:hover { color: var(--fg-2); }
+
+    /* ── MOBILE ────────────────────────────────── */
+    @media (max-width: 768px) {
+      html { font-size: 18px; }
+      .main { padding: 24px 14px 60px; }
+      .card { padding: 38px 22px; }
+      .card-title { font-size: 1.375rem; }
+      .card-logo { height: 64px; margin-bottom: 24px; }
+      .card-icon { width: 58px; height: 58px; font-size: 1.625rem; }
+    }
     @media (max-width: 700px) {
       .site-footer { height: auto; padding: 14px 16px; }
       .footer-inner { flex-wrap: wrap; justify-content: center; text-align: center; row-gap: 10px; }
@@ -506,715 +171,28 @@
 <header class="hdr">
   <div class="hdr-inner">
     <img src="assets/logo-with-tagline.png" alt="מובילי חינוך" class="hdr-logo">
-    <span class="hdr-counter" id="hdr-counter"></span>
   </div>
 </header>
 
-<!-- PROGRESS BAR -->
-<div class="prog-bar-wrap" id="prog-bar-wrap" style="display:none">
-  <div class="prog-inner">
-    <div class="prog-meta">
-      <span id="prog-label"></span>
-      <span id="prog-pct"></span>
-    </div>
-    <div class="prog-track"><div class="prog-fill" id="prog-fill" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="התקדמות בסקר" style="width:0%"></div></div>
-  </div>
-</div>
-
 <main class="main" id="main-content">
+  <div class="card">
+    <img src="assets/logo-with-tagline.png" alt="מובילי חינוך" class="card-logo">
+    <div class="card-icon" aria-hidden="true">🙏</div>
+    <h1 class="card-title">תודה על השתתפותכם בסקר</h1>
+    <div class="card-divider"></div>
+    <p class="card-body">תודה לכל ההורים שבחרו להשמיע את קולם ולמלא את סקר ההורים הגדול על מערכת החינוך.</p>
+    <p class="card-body">הקול שלכם חשוב. הוא יסייע להציב את החינוך במרכז סדר היום הציבורי.</p>
+    <p class="card-body">מוזמנים להצטרף לקבוצת העדכונים השקטה של תנועת מובילי חינוך ולהישאר בתמונה.</p>
 
-  <!-- ══ STEP 0 — COVER ══════════════════════════════════════ -->
-  <div class="step active" id="step-0">
-    <div class="cover">
-      <img src="assets/logo-with-tagline.png" alt="מובילי חינוך" class="cover-logo">
-      <div class="cover-eyebrow">חינוך במרכז | ישראל 2026</div>
-      <h1 class="cover-title">סקר הורים ארצי</h1>
-      <div class="cover-divider"></div>
-      <p class="cover-body">
-        סקר זה נועד לתת קול להורים בישראל. אנחנו מבקשים למפות את עמדותיכם על מערכת החינוך,
-        לזהות את האתגרים שאתם חווים בשטח, ולהפוך אותם לסדר יום ציבורי שיוצג למפלגות
-        ולמועמדים לקראת הבחירות הקרובות.
-        <br><br>
-        כי מי שמגדל ילדים בישראל, יודע טוב מכולם מה צריך להשתנות.
-      </p>
-      <p style="font-size:13px; color:var(--fg-3); margin-bottom:20px;"><strong style="color:var(--brand-navy);">הסקר אנונימי</strong></p>
-      <button class="btn btn-start" onclick="goTo(1)">מתחילים</button>
+    <div class="cta-wrap">
+      <div class="cta-label">הצטרפו לקבוצת העדכונים</div>
+      <a href="https://movileyhinuch.s.gy/whatsapp-group-join-parets-survey-2026" target="_blank" rel="noopener" class="btn-wa">
+        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        הצטרפו לקבוצה
+      </a>
     </div>
   </div>
-
-  <!-- ══ STEP 1 — חלק א: רקע ══════════════════════════════════════ -->
-  <div class="step" id="step-1" data-screen-label="01">
-    <div class="sec-tag">חלק א</div>
-    <h2 class="sec-title">רקע</h2>
-    <div class="q">
-      <div class="q-label"><span class="q-num">1. </span>באילו מסגרות חינוכיות לומדים ילדיכם?</div>
-      <div class="q-note">ניתן לסמן יותר מתשובה אחת</div>
-      <div class="opts" id="q1"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">2. </span>אזור מגורים</div>
-      <div class="opts" id="q2"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">3. </span>זרם חינוך</div>
-      <div class="q-note">ניתן לסמן יותר מתשובה אחת</div>
-      <div class="opts" id="q3"></div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goTo(0)">חזרה</button>
-      <button class="btn btn-primary" onclick="goNext(2)">הבא</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 2 — חלק ב: תמונת מצב ══════════════════════════════════════ -->
-  <div class="step" id="step-2" data-screen-label="02">
-    <div class="sec-tag">חלק ב</div>
-    <h2 class="sec-title">תמונת מצב כללית</h2>
-    <p class="sec-desc">בסולם 1 עד 5: 1 = שלילי מאוד, 5 = חיובי מאוד</p>
-
-    <div class="q">
-      <div class="q-label"><span class="q-num">4. </span>כיצד אתם מעריכים את מצב מערכת החינוך בישראל כיום?</div>
-      <div class="scale-wrap">
-        <div class="scale-grid" id="q4"></div>
-      </div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">5. </span>לדעתכם, מצב מערכת החינוך בחמש השנים האחרונות:</div>
-      <div class="scale-wrap">
-        <div class="scale-grid" id="q5"></div>
-      </div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">6. </span>עד כמה אתם נותנים אמון בגופים הבאים?</div>
-      <div class="q-note">1 = אין אמון כלל, 5 = אמון רב מאוד</div>
-      <div class="tbl" id="q6"></div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goTo(1)">חזרה</button>
-      <button class="btn btn-primary" onclick="goNextSkip(true)">הבא</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 3 — חלק ג: גיל הרך ══════════════════════════════════════ -->
-  <div class="step" id="step-3" data-screen-label="03">
-    <div class="sec-tag">חלק ג</div>
-    <h2 class="sec-title">גיל הרך (לידה עד גיל 6)</h2>
-    <div class="skip-note">
-      <span>חלק זה מיועד להורים שיש להם ילדים עד גיל 6. אם אין, ניתן לדלג.</span>
-      <button class="skip-btn" onclick="goTo(4)">דלג לחלק ד</button>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">7. </span>עד כמה הנושאים הבאים מהווים בעיה בחינוך לגיל הרך?</div>
-      <div class="q-note">1 = בעיה חמורה מאוד, 5 = כלל לא בעיה</div>
-      <div class="tbl" id="q7"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">8. </span>עד כמה אתם מרגישים שהמדינה לוקחת אחריות על חינוך הילדים לפני גיל 6?</div>
-      <div class="scale-wrap">
-        <div class="scale-grid" id="q8"></div>
-      </div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">9. </span>האם הצלחתם לקבל מקום במסגרת ציבורית לפני גיל שלוש ללא המתנה ממושכת?</div>
-      <div class="opts" id="q9"></div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goTo(2)">חזרה</button>
-      <button class="btn btn-primary" onclick="goNext(4)">הבא</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 4 — חלק ד: אתגרי הכיתה ══════════════════════════════════════ -->
-  <div class="step" id="step-4" data-screen-label="04">
-    <div class="sec-tag">חלק ד</div>
-    <h2 class="sec-title">אתגרי הכיתה</h2>
-    <div class="q">
-      <div class="q-label"><span class="q-num">10. </span>עד כמה הנושאים הבאים מהווים בעיה במערכת החינוך?</div>
-      <div class="q-note">1 = בעיה חמורה מאוד, 5 = כלל לא בעיה</div>
-      <div class="tbl" id="q10"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">11. </span>האם חוויתם בשנה האחרונה?</div>
-      <div class="yn" id="q11"></div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goSkipEarly(false)">חזרה</button>
-      <button class="btn btn-primary" onclick="goNext(5)">הבא</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 5 — חלק ה: תכנית ליבה ══════════════════════════════════════ -->
-  <div class="step" id="step-5" data-screen-label="05">
-    <div class="sec-tag">חלק ה</div>
-    <h2 class="sec-title">תכנית ליבה ושוויון הזדמנויות</h2>
-    <div class="q">
-      <div class="q-label"><span class="q-num">12. </span>עד כמה חשוב שכל תלמיד בישראל, בכל זרם, ילמד את המקצועות הבאים ברמה בסיסית מחייבת?</div>
-      <div class="q-note">1 = כלל לא חשוב, 5 = חשוב מאוד</div>
-      <div class="tbl" id="q12"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">13. </span>האם המדינה צריכה לקבוע סטנדרטים חינוכיים בסיסיים המחייבים את כלל ילדי ישראל, ללא קשר לזרם החינוך?</div>
-      <div class="opts" id="q13"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">14. </span>עד כמה אתם מרגישים שילדכם מקבל חינוך שווה לילדים מאזורים אחרים בישראל?</div>
-      <div class="scale-wrap">
-        <div class="scale-grid" id="q14"></div>
-      </div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goTo(4)">חזרה</button>
-      <button class="btn btn-primary" onclick="goNext(6)">הבא</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 6 — חלק ו: כוח אדם ══════════════════════════════════════ -->
-  <div class="step" id="step-6" data-screen-label="06">
-    <div class="sec-tag">חלק ו</div>
-    <h2 class="sec-title">כוח אדם בהוראה</h2>
-    <div class="q">
-      <div class="q-label"><span class="q-num">15. </span>לדעתכם, מה הסיבה העיקרית למחסור במורים?</div>
-      <div class="q-note">ניתן לסמן יותר מתשובה אחת</div>
-      <div class="opts" id="q15"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">16. </span>אילו צעדים לדעתכם יסייעו ביותר להתמודד עם המחסור במורים?</div>
-      <div class="q-note">ניתן לסמן עד שלוש תשובות</div>
-      <div class="opts" id="q16"></div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goTo(5)">חזרה</button>
-      <button class="btn btn-primary" onclick="goNext(7)">הבא</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 7 — חלק ז: הישגים ושקיפות ══════════════════════════════════════ -->
-  <div class="step" id="step-7" data-screen-label="07">
-    <div class="sec-tag">חלק ז</div>
-    <h2 class="sec-title">הישגים, מדידה ושקיפות</h2>
-    <div class="q">
-      <div class="q-label"><span class="q-num">17. </span>עד כמה אתם מודאגים מרמת ההישגים של תלמידי ישראל בהשוואה בינלאומית?</div>
-      <div class="scale-wrap">
-        <div class="scale-grid" id="q17"></div>
-      </div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">18. </span>עד כמה מערכת החינוך מכינה את ילדכם לעולם העבודה ולהשכלה גבוהה?</div>
-      <div class="scale-wrap">
-        <div class="scale-grid" id="q18"></div>
-      </div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">19. </span>עד כמה חשוב לפרסם לציבור נתונים שוטפים על המדדים הבאים?</div>
-      <div class="q-note">1 = כלל לא חשוב, 5 = חשוב מאוד</div>
-      <div class="tbl" id="q19"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">20. </span>האם הציבור מקבל כיום תמונה אמינה על מצב מערכת החינוך?</div>
-      <div class="scale-wrap">
-        <div class="scale-grid" id="q20"></div>
-      </div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goTo(6)">חזרה</button>
-      <button class="btn btn-primary" onclick="goNext(8)">הבא</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 8 — חלק ח: אחריות המדינה ══════════════════════════════════════ -->
-  <div class="step" id="step-8" data-screen-label="08">
-    <div class="sec-tag">חלק ח</div>
-    <h2 class="sec-title">אחריות המדינה והשקעה ציבורית</h2>
-    <div class="q">
-      <div class="q-label"><span class="q-num">21. </span>מי נושא באחריות העיקרית למצב מערכת החינוך?</div>
-      <div class="q-note">ניתן לסמן יותר מתשובה אחת</div>
-      <div class="opts" id="q21"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">22. </span>עד כמה אתם מסכימים עם ההיגדים הבאים?</div>
-      <div class="q-note">1 = כלל לא מסכים, 5 = מסכים מאוד</div>
-      <div class="tbl" id="q22"></div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goTo(7)">חזרה</button>
-      <button class="btn btn-primary" onclick="goNext(9)">הבא</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 9 — חלק ט: סדרי עדיפויות ══════════════════════════════════════ -->
-  <div class="step" id="step-9" data-screen-label="09">
-    <div class="sec-tag">חלק ט</div>
-    <h2 class="sec-title">סדרי עדיפויות לאומיים</h2>
-    <div class="q">
-      <div class="q-label"><span class="q-num">23. </span>אם הייתם יכולים לתעדף שתי בעיות בלבד לטיפול מיידי, מה הייתם בוחרים?</div>
-      <div class="q-note">ניתן לסמן עד שתי תשובות</div>
-      <div class="opts" id="q23"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">24. </span>אם יתווסף תקציב משמעותי לחינוך, היכן לדעתכם יש להשקיע?</div>
-      <div class="q-note">ניתן לסמן עד שתי תשובות</div>
-      <div class="opts" id="q24"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">25. </span>מהו התפקיד החשוב ביותר של מערכת החינוך לדעתכם?</div>
-      <div class="q-note">ניתן לסמן עד שתי תשובות</div>
-      <div class="opts" id="q25"></div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goTo(8)">חזרה</button>
-      <button class="btn btn-primary" onclick="goNext(10)">הבא</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 10 — חלק י: מעורבות הורים ══════════════════════════════════════ -->
-  <div class="step" id="step-10" data-screen-label="10">
-    <div class="sec-tag">חלק י</div>
-    <h2 class="sec-title">מעורבות הורים ושותפות</h2>
-    <div class="q">
-      <div class="q-label"><span class="q-num">26. </span>עד כמה אתם מרגישים שותפים בקבלת החלטות בבית הספר?</div>
-      <div class="scale-wrap">
-        <div class="scale-grid" id="q26"></div>
-      </div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">28. </span>כמה מוציאה משפחתכם על שיעורים פרטיים ועזרה לימודית בשנה?</div>
-      <div class="opts" id="q28"></div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goTo(9)">חזרה</button>
-      <button class="btn btn-primary" onclick="goNext(11)">הבא</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 11 — חלק יא: עתיד ══════════════════════════════════════ -->
-  <div class="step" id="step-11" data-screen-label="11">
-    <div class="sec-tag">חלק יא</div>
-    <h2 class="sec-title">חינוך, עתיד וניידות בין-דורית</h2>
-    <div class="q">
-      <div class="q-label"><span class="q-num">29. </span>עד כמה אתם מאמינים שמערכת החינוך הציבורית תאפשר לילדכם להצליח באקדמיה ובשוק העבודה?</div>
-      <div class="scale-wrap">
-        <div class="scale-grid" id="q29"></div>
-      </div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">30. </span>עד כמה בית הספר מכין את ילדכם לעולם טכנולוגי ומשתנה?</div>
-      <div class="scale-wrap">
-        <div class="scale-grid" id="q30"></div>
-      </div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goTo(10)">חזרה</button>
-      <button class="btn btn-primary" onclick="goNext(12)">הבא</button>
-    </div>
-  </div>
-
-  <!-- ══ STEP 12 — חלק יב: חינוך ובחירות ══════════════════════════════════════ -->
-  <div class="step" id="step-12" data-screen-label="12">
-    <div class="sec-tag">חלק יב</div>
-    <h2 class="sec-title">חינוך ובחירות</h2>
-    <div class="q">
-      <div class="q-label"><span class="q-num">31. </span>עד כמה נושא החינוך ישפיע על הצבעתכם בבחירות הקרובות?</div>
-      <div class="scale-wrap">
-        <div class="scale-grid" id="q31"></div>
-      </div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">32. </span>אם מפלגה הייתה מציגה תוכנית חינוך מפורטת עם יעדים מדידים ותקציב מוגדר, עד כמה הדבר היה משפיע על הצבעתכם?</div>
-      <div class="scale-wrap">
-        <div class="scale-grid" id="q32"></div>
-      </div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">33. </span>האם לדעתכם החינוך צריך להיות אחד משלושת הנושאים המרכזיים בבחירות הקרובות?</div>
-      <div class="opts" id="q33"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">34. </span>האם תהיו מוכנים לפעול לקידום נושא החינוך?</div>
-      <div class="q-note">ניתן לסמן יותר מתשובה אחת</div>
-      <div class="opts" id="q34"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">35. </span>אילו ציון הייתם נותנים למערכת החינוך בישראל כיום?</div>
-      <div class="grades" id="q35"></div>
-    </div>
-    <div class="q">
-      <div class="q-label"><span class="q-num">36. </span>האם תהיו מעוניינים להצטרף לקבוצת עדכונים שקטה בנושא החינוך בישראל?</div>
-      <div class="opts" id="q36"></div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-ghost" onclick="goTo(11)">חזרה</button>
-      <button class="btn btn-primary btn-lg" id="submit-btn" onclick="submitWithValidation()">שלחו את הסקר</button>
-    </div>
-    <div class="submit-error" id="submit-error" role="alert">
-      אירעה שגיאה בשליחת הסקר. אנא נסו שוב.
-    </div>
-  </div>
-
-  <!-- ══ STEP 13 — תודה ══════════════════════════════════════ -->
-  <div class="step" id="step-13" data-screen-label="13">
-    <div class="ty-card">
-      <div class="ty-icon">
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-          <path d="M5 15.5L11.5 22L25 8" stroke="#2E9E5B" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <h2 class="ty-title">תודה על השתתפותכם!</h2>
-      <p class="ty-body">ממצאי הסקר יפורסמו לציבור ויוצגו לנבחרי ציבור ומועמדים לפני הבחירות.</p>
-      <div class="ty-join">
-        <h3>רוצים לעקוב אחרי ההתפתחויות?</h3>
-        <p>הצטרפו לקבוצת עדכונים שקטה על הנעשה במערכת החינוך בישראל</p>
-        <a href="https://movileyhinuch.s.gy/whatsapp-group-join-parets-survey-2026" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-flex;">הצטרפו כאן</a>
-      </div>
-      <div style="margin-top:24px; text-align:right;">
-        <button class="btn btn-ghost" onclick="goTo(12)" style="font-size:13px; padding:9px 18px;">חזרה לסקר</button>
-      </div>
-    </div>
-  </div>
-
 </main>
-
-<script>
-const A = {}; // answers store
-let cur = 0;
-const TOTAL = 12;
-
-// ── WEBHOOK — n8n (uppercut) ──────────────────────────────────────
-const WEBHOOK_URL = 'https://wn8n.uppercut.tech/webhook/survey-parents-2026';
-
-const LABELS = [
-  '', 'חלק א — רקע', 'חלק ב — תמונת מצב כללית', 'חלק ג — גיל הרך',
-  'חלק ד — אתגרי הכיתה', 'חלק ה — תכנית ליבה ושוויון', 'חלק ו — כוח אדם בהוראה',
-  'חלק ז — הישגים, מדידה ושקיפות', 'חלק ח — אחריות המדינה',
-  'חלק ט — סדרי עדיפויות', 'חלק י — מעורבות הורים',
-  'חלק יא — חינוך, עתיד וניידות', 'חלק יב — חינוך ובחירות'
-];
-
-// ── VALIDATION ───────────────────────────────────────────────────
-const STEP_QUESTIONS = {
-  1:  ['q1','q2','q3'],
-  2:  ['q4','q5','q6'],
-  3:  ['q7','q8','q9'],
-  4:  ['q10','q11'],
-  5:  ['q12','q13','q14'],
-  6:  ['q15','q16'],
-  7:  ['q17','q18','q19','q20'],
-  8:  ['q21','q22'],
-  9:  ['q23','q24','q25'],
-  10: ['q26','q28'],
-  11: ['q29','q30'],
-  12: ['q31','q32','q33','q34','q35','q36']
-};
-const TABLE_ROWS = { q6:2, q7:6, q10:7, q11:7, q12:7, q19:6, q22:7 };
-
-function isAnswered(qid) {
-  const v = A[qid];
-  if (v === undefined || v === null) return false;
-  if (Array.isArray(v)) return v.length > 0;
-  if (typeof v === 'object') {
-    const n = TABLE_ROWS[qid] || 0;
-    for (let i = 0; i < n; i++) {
-      if (v[i] === undefined || v[i] === null) return false;
-    }
-    return true;
-  }
-  return true;
-}
-
-function clearErrors() {
-  document.querySelectorAll('.q.q-error').forEach(el => el.classList.remove('q-error'));
-}
-
-function showErrors(unanswered) {
-  window._valFirstCard = null;
-  unanswered.forEach(qid => {
-    const el = document.getElementById(qid);
-    const card = el && el.closest('.q');
-    if (card) { card.classList.add('q-error'); if (!window._valFirstCard) window._valFirstCard = card; }
-  });
-  openValModal();
-}
-
-function goNext(target) {
-  const unanswered = (STEP_QUESTIONS[cur] || []).filter(q => !isAnswered(q));
-  if (unanswered.length) { showErrors(unanswered); return; }
-  goTo(target);
-}
-
-function goNextSkip(forward) {
-  const unanswered = (STEP_QUESTIONS[cur] || []).filter(q => !isAnswered(q));
-  if (unanswered.length) { showErrors(unanswered); return; }
-  goTo(forward ? (hasEarlyChildhood() ? 3 : 4) : (hasEarlyChildhood() ? 3 : 2));
-}
-
-function submitWithValidation() {
-  const unanswered = (STEP_QUESTIONS[cur] || []).filter(q => !isAnswered(q));
-  if (unanswered.length) { showErrors(unanswered); return; }
-  submitSurvey();
-}
-
-// ── NAVIGATION ───────────────────────────────────────────────────
-function hasEarlyChildhood() {
-  const q1 = A.q1 || [];
-  return q1.some(v => v.startsWith('מעון') || v.startsWith('גן ילדים'));
-}
-function goSkipEarly(forward) {
-  goTo(forward ? (hasEarlyChildhood() ? 3 : 4) : (hasEarlyChildhood() ? 3 : 2));
-}
-
-function goTo(n) {
-  clearErrors();
-  document.getElementById('step-' + cur).classList.remove('active');
-  cur = n;
-  document.getElementById('step-' + cur).classList.add('active');
-  updateProg();
-  window.scrollTo({ top: 0 });
-}
-
-function updateProg() {
-  const wrap  = document.getElementById('prog-bar-wrap');
-  const fill  = document.getElementById('prog-fill');
-  const label = document.getElementById('prog-label');
-  const pct   = document.getElementById('prog-pct');
-  const ctr   = document.getElementById('hdr-counter');
-  if (cur === 0 || cur === 13) {
-    wrap.style.display = 'none'; ctr.textContent = ''; return;
-  }
-  wrap.style.display = 'block';
-  const p = Math.round((cur / TOTAL) * 100);
-  fill.style.width = p + '%';
-  fill.setAttribute('aria-valuenow', p);
-  label.textContent = LABELS[cur] || '';
-  pct.textContent   = p + '%';
-  ctr.textContent   = cur + ' / ' + TOTAL;
-}
-
-// ── SUBMIT ───────────────────────────────────────────────────────
-function submitSurvey() {
-  const btn = document.getElementById('submit-btn');
-  const backBtn = btn.closest('.nav-row').querySelector('.btn-ghost');
-
-  btn.disabled = true;
-  if (backBtn) backBtn.disabled = true;
-
-  goTo(13);
-
-  if (WEBHOOK_URL) {
-    fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ submitted_at: new Date().toISOString(), answers: A })
-    }).catch(() => {});
-  }
-}
-
-// ── RENDER HELPERS ───────────────────────────────────────────────
-function mkCheckbox(id, opts, qid, max) {
-  const el = document.getElementById(id); if (!el) return; el.innerHTML = '';
-  const qLbl = el.closest('.q')?.querySelector('.q-label');
-  if (qLbl && !qLbl.id) qLbl.id = 'ql-' + qid;
-  el.setAttribute('role', 'group');
-  if (qLbl) el.setAttribute('aria-labelledby', qLbl.id);
-  opts.forEach(o => {
-    const lbl = document.createElement('label');
-    lbl.className = 'opt'; lbl.dataset.v = o;
-    lbl.setAttribute('role', 'checkbox');
-    lbl.setAttribute('aria-checked', 'false');
-    lbl.setAttribute('tabindex', '0');
-    lbl.innerHTML = `<input type="checkbox" aria-hidden="true" tabindex="-1"><span class="opt-box"><span class="opt-box-dot"></span></span><span class="opt-text">${o}</span>`;
-    const toggle = () => {
-      if (!lbl.classList.contains('sel') && max && el.querySelectorAll('.sel').length >= max) return;
-      const next = !lbl.classList.contains('sel');
-      lbl.classList.toggle('sel');
-      lbl.setAttribute('aria-checked', next ? 'true' : 'false');
-      A[qid] = [...el.querySelectorAll('.sel')].map(x => x.dataset.v);
-    };
-    lbl.addEventListener('click', e => { e.preventDefault(); toggle(); });
-    lbl.addEventListener('keydown', e => {
-      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
-    });
-    el.appendChild(lbl);
-  });
-}
-
-function mkRadio(id, opts, qid) {
-  const el = document.getElementById(id); if (!el) return; el.innerHTML = '';
-  const qLbl = el.closest('.q')?.querySelector('.q-label');
-  if (qLbl && !qLbl.id) qLbl.id = 'ql-' + qid;
-  el.setAttribute('role', 'radiogroup');
-  if (qLbl) el.setAttribute('aria-labelledby', qLbl.id);
-  opts.forEach(o => {
-    const lbl = document.createElement('label');
-    lbl.className = 'opt'; lbl.dataset.v = o;
-    lbl.setAttribute('role', 'radio');
-    lbl.setAttribute('aria-checked', 'false');
-    lbl.setAttribute('tabindex', '0');
-    lbl.innerHTML = `<input type="radio" aria-hidden="true" tabindex="-1"><span class="opt-circle"><span class="opt-circle-dot"></span></span><span class="opt-text">${o}</span>`;
-    const select = () => {
-      el.querySelectorAll('.opt').forEach(x => { x.classList.remove('sel'); x.setAttribute('aria-checked', 'false'); });
-      lbl.classList.add('sel'); lbl.setAttribute('aria-checked', 'true'); A[qid] = o;
-    };
-    lbl.addEventListener('click', e => { e.preventDefault(); select(); });
-    lbl.addEventListener('keydown', e => {
-      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); select(); }
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-        e.preventDefault();
-        const items = [...el.querySelectorAll('[role="radio"]')];
-        items[(items.indexOf(lbl) + 1) % items.length].focus();
-      }
-      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-        e.preventDefault();
-        const items = [...el.querySelectorAll('[role="radio"]')];
-        items[(items.indexOf(lbl) - 1 + items.length) % items.length].focus();
-      }
-    });
-    el.appendChild(lbl);
-  });
-}
-
-function mkScale(id, qid, labelLow, labelHigh) {
-  const el = document.getElementById(id); if (!el) return;
-  const qLbl = el.closest('.q')?.querySelector('.q-label');
-  if (qLbl && !qLbl.id) qLbl.id = 'ql-' + qid;
-  el.setAttribute('role', 'radiogroup');
-  if (qLbl) el.setAttribute('aria-labelledby', qLbl.id);
-  for (let v = 1; v <= 5; v++) {
-    const col = document.createElement('div');
-    col.className = 'scale-col';
-    const lbl = document.createElement('div');
-    lbl.className = 'scale-col-label';
-    lbl.setAttribute('aria-hidden', 'true');
-    if (v === 1 && labelLow)  lbl.textContent = labelLow;
-    if (v === 5 && labelHigh) lbl.textContent = labelHigh;
-    let ariaLabel = `${v}`;
-    if (v === 1 && labelLow)  ariaLabel = `${v} — ${labelLow}`;
-    if (v === 5 && labelHigh) ariaLabel = `${v} — ${labelHigh}`;
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'scale-btn'; b.textContent = v;
-    b.setAttribute('aria-label', ariaLabel);
-    b.setAttribute('aria-pressed', 'false');
-    b.addEventListener('click', () => {
-      el.querySelectorAll('.scale-btn').forEach(x => { x.classList.remove('sel'); x.setAttribute('aria-pressed', 'false'); });
-      b.classList.add('sel'); b.setAttribute('aria-pressed', 'true'); A[qid] = v;
-    });
-    col.appendChild(lbl);
-    col.appendChild(b);
-    el.appendChild(col);
-  }
-}
-
-function mkTable(id, rows, qid) {
-  const el = document.getElementById(id); if (!el) return; el.innerHTML = '';
-  const qLbl = el.closest('.q')?.querySelector('.q-label');
-  if (qLbl && !qLbl.id) qLbl.id = 'ql-' + qid;
-  if (qLbl) el.setAttribute('aria-labelledby', qLbl.id);
-  const hdr = document.createElement('div'); hdr.className = 'tbl-hdr'; hdr.setAttribute('aria-hidden', 'true');
-  const hl = document.createElement('div'); hl.className = 'tbl-hdr-label'; hl.textContent = 'נושא';
-  const hn = document.createElement('div'); hn.className = 'tbl-hdr-nums';
-  for (let v = 1; v <= 5; v++) { const s = document.createElement('span'); s.textContent = v; hn.appendChild(s); }
-  hdr.appendChild(hl); hdr.appendChild(hn); el.appendChild(hdr);
-  rows.forEach((txt, i) => {
-    const row = document.createElement('div'); row.className = 'tbl-row';
-    const lbl = document.createElement('div'); lbl.className = 'tbl-label'; lbl.textContent = txt; lbl.setAttribute('aria-hidden', 'true');
-    const btns = document.createElement('div'); btns.className = 'tbl-btns';
-    btns.setAttribute('role', 'radiogroup'); btns.setAttribute('aria-label', txt);
-    for (let v = 1; v <= 5; v++) {
-      const b = document.createElement('button');
-      b.type = 'button'; b.className = 'tbl-btn'; b.textContent = v;
-      b.setAttribute('aria-label', `${v} — ${txt}`);
-      b.setAttribute('aria-pressed', 'false');
-      b.addEventListener('click', () => {
-        btns.querySelectorAll('.tbl-btn').forEach(x => { x.classList.remove('sel'); x.setAttribute('aria-pressed', 'false'); });
-        b.classList.add('sel'); b.setAttribute('aria-pressed', 'true');
-        if (!A[qid]) A[qid] = {};
-        A[qid][i] = v;
-      });
-      btns.appendChild(b);
-    }
-    row.appendChild(lbl); row.appendChild(btns); el.appendChild(row);
-  });
-}
-
-function mkYN(id, rows, qid) {
-  const el = document.getElementById(id); if (!el) return; el.innerHTML = '';
-  const qLbl = el.closest('.q')?.querySelector('.q-label');
-  if (qLbl && !qLbl.id) qLbl.id = 'ql-' + qid;
-  if (qLbl) el.setAttribute('aria-labelledby', qLbl.id);
-  const hdr = document.createElement('div'); hdr.className = 'yn-hdr'; hdr.setAttribute('aria-hidden', 'true');
-  hdr.innerHTML = '<div>נושא</div><div>כן</div><div>לא</div><div>לא רלוונטי</div>';
-  el.appendChild(hdr);
-  rows.forEach((txt, i) => {
-    const row = document.createElement('div'); row.className = 'yn-row';
-    row.setAttribute('role', 'group'); row.setAttribute('aria-label', txt);
-    const lbl = document.createElement('div'); lbl.className = 'yn-row-label'; lbl.textContent = txt; lbl.setAttribute('aria-hidden', 'true');
-    row.appendChild(lbl);
-    ['כן','לא','לא רלוונטי'].forEach(val => {
-      const cell = document.createElement('div'); cell.className = 'yn-cell';
-      const b = document.createElement('button'); b.type = 'button'; b.className = 'yn-btn';
-      b.setAttribute('aria-label', `${val} — ${txt}`);
-      b.setAttribute('aria-pressed', 'false');
-      b.addEventListener('click', () => {
-        row.querySelectorAll('.yn-btn').forEach(x => { x.classList.remove('sel'); x.setAttribute('aria-pressed', 'false'); });
-        b.classList.add('sel'); b.setAttribute('aria-pressed', 'true');
-        if (!A[qid]) A[qid] = {};
-        A[qid][i] = val;
-      });
-      cell.appendChild(b); row.appendChild(cell);
-    });
-    el.appendChild(row);
-  });
-}
-
-function mkGrades(id, qid) {
-  const el = document.getElementById(id); if (!el) return;
-  for (let v = 1; v <= 10; v++) {
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'grade-btn'; b.textContent = v;
-    b.addEventListener('click', () => {
-      el.querySelectorAll('.grade-btn').forEach(x => x.classList.remove('sel'));
-      b.classList.add('sel'); A[qid] = v;
-    });
-    el.appendChild(b);
-  }
-}
-
-// ── INIT ──────────────────────────────────────────────────────────
-mkCheckbox('q1', ['מעון יום (לידה עד גיל 3)', 'גן ילדים (גיל 3 עד 6)', 'בית ספר יסודי', 'חטיבת ביניים', 'תיכון', 'חינוך מיוחד'], 'q1');
-mkRadio('q2', ['צפון', 'חיפה והכרמל', 'מרכז וגוש דן', 'ירושלים והסביבה', 'שפלה', 'דרום', 'יהודה ושומרון'], 'q2');
-mkCheckbox('q3', ['ממלכתי', 'ממלכתי דתי', 'ממלכתי חרדי', 'חרדי', 'ערבי', 'אחר'], 'q3');
-mkScale('q4',  'q4',  'שלילי מאוד',      'חיובי מאוד');
-mkScale('q5',  'q5',  'הידרדר מאוד',     'השתפר מאוד');
-mkScale('q8',  'q8',  'אין אחריות כלל',  'אחריות מלאה');
-mkScale('q14', 'q14', 'פערים ניכרים',    'שוויון מלא');
-mkScale('q17', 'q17', 'מודאג מאוד',      'כלל לא מודאג');
-mkScale('q18', 'q18', 'כלל לא מכינה',    'מכינה היטב');
-mkScale('q20', 'q20', 'כלל לא אמינה',    'אמינה מאוד');
-mkScale('q26', 'q26', 'כלל לא שותף/ה',   'שותף/ה מלא/ה');
-mkScale('q29', 'q29', 'כלל לא מאמין/ה',  'מאמין/ה מאוד');
-mkScale('q30', 'q30', 'כלל לא מכין',     'מכין היטב');
-mkScale('q31', 'q31', 'כלל לא ישפיע',    'ישפיע מאוד');
-mkScale('q32', 'q32', 'כלל לא ישפיע',    'ישפיע מאוד');
-mkTable('q6', ['משרד החינוך', 'הרשות המקומית'], 'q6');
-mkTable('q7', ['עלות המסגרות (מעון, גן)', 'מחסור במסגרות זמינות באזורי מגוריכם', 'מספר ילדים גבוה בקבוצה', 'מחסור במטפלות וגננות מוסמכות', 'תחלופת צוותים גבוהה', 'רמת ההכשרה המקצועית של הצוות'], 'q7');
-mkRadio('q9', ['כן', 'לא, המתנו זמן רב', 'לא, לא מצאנו מסגרת ציבורית מתאימה', 'לא רלוונטי'], 'q9');
-mkTable('q10', ['מחסור במורים', 'שחיקת מורים', 'תחלופת מורים גבוהה במהלך השנה', 'צפיפות בכיתות', 'הישגים לימודיים', 'אלימות וחרמות', 'מענה רגשי ונפשי לתלמידים'], 'q10');
-mkYN('q11', ['מחסור במורה מקצועי בשיעורים קבועים', 'החלפת מורה אחד או יותר במהלך שנת הלימודים', 'חרם או אלימות שפגעו בילדכם', 'קושי לקבל מענה רגשי מהמסגרת החינוכית', 'צורך לשלם על שיעורים פרטיים בגלל פערים מהכיתה', 'קושי לממש זכויות חינוכיות של ילדכם', 'כיתה צפופה מעל 30 תלמידים'], 'q11');
-mkTable('q12', ['עברית', 'מתמטיקה', 'אנגלית', 'מדעים', 'אזרחות ועקרונות דמוקרטיים', 'אוריינות דיגיטלית', 'מורשת ישראל'], 'q12');
-mkRadio('q13', ['בהחלט כן', 'כן', 'לא בטוח/ה', 'לא'], 'q13');
-mkCheckbox('q15', ['שכר נמוך', 'תנאי עבודה קשים', 'כיתות גדולות מדי', 'מעמד חברתי נמוך של המקצוע', 'עומס בירוקרטי', 'אין לי מושג'], 'q15');
-mkCheckbox('q16', ['העלאת שכר המורים', 'צמצום מספר התלמידים בכיתה', 'הפחתת עומס בירוקרטי ודיווחים', 'הגדלת מספר אנשי התמיכה בבתי הספר (יועצים, סייעות, אנשי טיפול וכדומה)', 'שיפור ההכשרה והליווי של מורים חדשים', 'יצירת מסלולי קידום מקצועיים למורים מצטיינים', 'שיפור הביטחון והגיבוי למורים בהתמודדות עם אלימות ובעיות משמעת', 'הגדלת האוטונומיה המקצועית של מורים ומנהלים', 'איני יודע/ת'], 'q16', 3);
-mkTable('q19', ['הישגים לימודיים', 'אלימות ואקלים בית ספרי', 'נשירה ונוכחות', 'מחסור במורים', 'שביעות רצון הורים', 'השוואה בין רשויות מקומיות'], 'q19');
-mkCheckbox('q21', ['משרד החינוך', 'הממשלה', 'הרשויות המקומיות', 'ארגוני המורים', 'ההורים', 'כולם במידה שווה'], 'q21');
-mkTable('q22', ['רמת ההשקעה הממשלתית בחינוך הציבורי נמוכה מהנדרש', 'ההקצאה התקציבית בין הזרמים השונים אינה שוויונית', 'פערי התקצוב בין רשויות מקומיות חזקות לחלשות פוגעים בשוויון ההזדמנויות של ילדים', 'המדינה אינה משקיעה מספיק בגיל הרך (מעונות יום וגני ילדים)', 'המדינה צריכה להגדיל את השקעתה בחינוך הציבורי גם במחיר העברת תקציבים מתחומים אחרים', 'למדינה אחריות מלאה להבטיח לכל ילד בישראל גישה לחינוך איכותי, ללא תלות במקום מגוריו או ברקע המשפחתי שלו', 'המדינה צריכה להתנות תקצוב ציבורי בעמידה בסטנדרטים אחידים של פיקוח, שקיפות ותוכנית לימודים מחייבת'], 'q22');
-mkCheckbox('q23', ['מחסור במורים', 'צפיפות בכיתות', 'אלימות ובריאות נפשית', 'הישגים לימודיים', 'גיל הרך', 'חינוך מיוחד', 'פערים בין אזורים', 'שקיפות ונתונים'], 'q23', 2);
-mkCheckbox('q24', ['שכר מורים', 'צמצום גודל הכיתות', 'גיל הרך', 'בריאות נפשית ואקלים חינוכי', 'חינוך מיוחד', 'שיפור הישגים לימודיים', 'הכשרת מורים'], 'q24', 2);
-mkCheckbox('q25', ['הקניית ידע ומיומנויות', 'הכנה לעולם העבודה', 'צמצום פערים חברתיים', 'חינוך לערכים ואזרחות', 'טיפוח רווחה נפשית', 'יצירת חברה משותפת ומלוכדת'], 'q25', 2);
-mkRadio('q28', ['לא מוציאים כלום', 'עד 3,000 שקל', '3,000 עד 6,000 שקל', '6,000 עד 12,000 שקל', 'מעל 12,000 שקל'], 'q28');
-mkRadio('q33', ['בהחלט כן', 'כן', 'לא בטוח/ה', 'לא'], 'q33');
-mkCheckbox('q34', ['חתימה על עצומה', 'הצטרפות לקבוצת עדכונים', 'השתתפות בחוג בית', 'פנייה לנבחרי ציבור', 'השתתפות בפעילות ציבורית', 'איני מעוניין/ת'], 'q34');
-mkGrades('q35', 'q35');
-mkRadio('q36', ['כן, אשמח להצטרף', 'לא'], 'q36');
-</script>
 
 <!-- FOOTER -->
 <footer class="site-footer">
@@ -1238,41 +216,16 @@ mkRadio('q36', ['כן, אשמח להצטרף', 'לא'], 'q36');
   </div>
 </footer>
 
-<!-- VALIDATION MODAL -->
-<div id="val-modal" role="dialog" aria-modal="true" aria-labelledby="val-title" style="display:none; position:fixed; inset:0; z-index:1001; background:rgba(0,0,0,.45); align-items:center; justify-content:center; padding:24px;">
-  <div style="background:#fff; border-radius:16px; max-width:360px; width:100%; padding:32px 28px; position:relative; direction:rtl; font-family:var(--font-sans); text-align:center; box-shadow:0 8px 32px rgba(0,0,0,.18);">
-    <p style="font-size:2.25rem; margin:0 0 8px; line-height:1;">🙏</p>
-    <h2 id="val-title" style="font-size:1.125rem; font-weight:700; color:var(--fg-1); margin:0 0 12px;">כמעט! עוד כמה תשובות</h2>
-    <p style="font-size:0.9375rem; color:var(--fg-2); line-height:1.65; margin:0 0 24px;">יש לענות על כל השאלות בעמוד כדי לעבור לעמוד הבא.<br>השאלות החסרות מסומנות באדום.</p>
-    <button id="val-ok" style="background:var(--brand-blue); color:#fff; border:none; border-radius:var(--r-md); padding:12px 32px; font-size:1rem; font-weight:600; cursor:pointer; font-family:var(--font-sans); width:100%;">הבנתי, אחזור למלא</button>
-  </div>
-</div>
-
-<script>
-(function(){
-  var vm = document.getElementById('val-modal');
-  var vok = document.getElementById('val-ok');
-  function shut(){
-    vm.style.display = 'none';
-    if (window._valFirstCard) { window._valFirstCard.scrollIntoView({ behavior:'smooth', block:'center' }); window._valFirstCard = null; }
-  }
-  vok.addEventListener('click', shut);
-  vm.addEventListener('click', function(e){ if (e.target === vm) shut(); });
-  document.addEventListener('keydown', function(e){ if (e.key==='Escape' && vm.style.display==='flex') shut(); });
-  window.openValModal = function(){ vm.style.display='flex'; vok.focus(); };
-})();
-</script>
-
 <!-- ACCESSIBILITY DECLARATION MODAL -->
 <div id="a11y-modal" role="dialog" aria-modal="true" aria-labelledby="a11y-title" style="display:none; position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.45); align-items:center; justify-content:center; padding:24px;">
   <div style="background:#fff; border-radius:12px; max-width:580px; width:100%; max-height:90vh; overflow-y:auto; padding:32px; position:relative; direction:rtl; font-family:var(--font-sans);">
     <button id="a11y-close" aria-label="סגור הצהרת נגישות" style="position:absolute; top:16px; left:16px; background:none; border:none; cursor:pointer; font-size:22px; color:var(--fg-3); line-height:1;">✕</button>
     <h2 id="a11y-title" style="font-size:20px; font-weight:700; color:var(--brand-navy); margin-bottom:16px;">הצהרת נגישות</h2>
     <p style="font-size:14px; color:var(--fg-2); line-height:1.7; margin-bottom:12px;">
-      עמותת <strong>מובילי חינוך הציבורי בישראל</strong> מחויבת להנגשת הסקר לכלל הציבור, לרבות אנשים עם מוגבלויות, בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), תשע"ג–2013.
+      עמותת <strong>מובילי חינוך הציבורי בישראל</strong> מחויבת להנגשת האתר לכלל הציבור, לרבות אנשים עם מוגבלויות, בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), תשע"ג–2013.
     </p>
     <p style="font-size:14px; color:var(--fg-2); line-height:1.7; margin-bottom:12px;">
-      הסקר עומד ברמת נגישות <strong>AA</strong> של תקן WCAG 2.1, ונבדק עם כלי בדיקה אוטומטיים.
+      העמוד עומד ברמת נגישות <strong>AA</strong> של תקן WCAG 2.1.
     </p>
     <h3 style="font-size:15px; font-weight:600; color:var(--fg-1); margin:16px 0 8px;">מה כולל ההנגשה</h3>
     <ul style="font-size:14px; color:var(--fg-2); line-height:1.9; padding-right:20px; margin-bottom:12px;">
